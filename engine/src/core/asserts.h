@@ -1,54 +1,53 @@
 #pragma once
+
 #include "defines.h"
+
 // Disable assertions by commenting out the below line.
-#define ASASSERTIONS_ENABLED
-#ifdef ASASSERTIONS_ENABLED
+#define KASSERTIONS_ENABLED
+
+#ifdef KASSERTIONS_ENABLED
 #if _MSC_VER
 #include <intrin.h>
 #define debugBreak() __debugbreak()
 #else
 #define debugBreak() __builtin_trap()
 #endif
-ASAPI void report_assertion_failure(const char *expression, const char *message, const char *file, i32 line);
-#define ASASSERT(expr)                                               \
+
+KAPI void report_assertion_failure(const char* expression, const char* message, const char* file, i32 line);
+
+#define KASSERT(expr)                                                \
     {                                                                \
-        if (expr)                                                    \
-        {                                                            \
-        }                                                            \
-        else                                                         \
-        {                                                            \
+        if (expr) {                                                  \
+        } else {                                                     \
             report_assertion_failure(#expr, "", __FILE__, __LINE__); \
             debugBreak();                                            \
         }                                                            \
     }
-#define ASASSERT_MSG(expr, message)                                       \
+
+#define KASSERT_MSG(expr, message)                                        \
     {                                                                     \
-        if (expr)                                                         \
-        {                                                                 \
-        }                                                                 \
-        else                                                              \
-        {                                                                 \
+        if (expr) {                                                       \
+        } else {                                                          \
             report_assertion_failure(#expr, message, __FILE__, __LINE__); \
             debugBreak();                                                 \
         }                                                                 \
     }
+
 #ifdef _DEBUG
-#define ASASSERT_DEBUG(expr)                                         \
+#define KASSERT_DEBUG(expr)                                          \
     {                                                                \
-        if (expr)                                                    \
-        {                                                            \
-        }                                                            \
-        else                                                         \
-        {                                                            \
+        if (expr) {                                                  \
+        } else {                                                     \
             report_assertion_failure(#expr, "", __FILE__, __LINE__); \
             debugBreak();                                            \
         }                                                            \
     }
 #else
-#define ASASSERT_DEBUG(expr) // Does nothing at all
+#define KASSERT_DEBUG(expr)  // Does nothing at all
 #endif
+
 #else
-#define ASASSERT(expr)              // Does nothing at all
-#define ASASSERT_MSG(expr, message) // Does nothing at all
-#define ASASSERT_DEBUG(expr)        // Does nothing at all
+#define KASSERT(expr)               // Does nothing at all
+#define KASSERT_MSG(expr, message)  // Does nothing at all
+#define KASSERT_DEBUG(expr)         // Does nothing at all
 #endif
